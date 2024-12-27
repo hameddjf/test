@@ -23,9 +23,7 @@ class ProductGallerySerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    """product serialaaizer for home & store page"""
-    category = serializers.PrimaryKeyRelatedField(
-        queryset=Category.objects.all())  # read_only=True
+    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
     images = serializers.SerializerMethodField()
 
     class Meta:
@@ -37,8 +35,8 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_images(self, obj):
         product_galleries = ProductGallery.objects.filter(product=obj)
-        return [gallery.resizes_images.url for gallery in product_galleries if gallery.resizes_images]
-
+        return [gallery.original_images.url for gallery in product_galleries if gallery.resizes_images]
+     
     def get_view_count(self, obj):
         return MostViewed.objects.filter(product=obj).count()
 

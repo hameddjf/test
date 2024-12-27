@@ -24,28 +24,28 @@ class BlogAPIView(APIView):
         serializer = BlogListSerializer(blogs, many=True)
         return Response(serializer.data)
 
-    def post(self, request):
-        serializer = BlogDetailSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # def post(self, request):
+    #     serializer = BlogDetailSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save(user=request.user)
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request, slug):
-        blog = get_object_or_404(Blog, slug=slug)
-        if blog.user != request.user:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+    # def put(self, request, slug):
+    #     blog = get_object_or_404(Blog, slug=slug)
+    #     if blog.user != request.user:
+    #         return Response(status=status.HTTP_403_FORBIDDEN)
 
-        serializer = BlogDetailSerializer(blog, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    #     serializer = BlogDetailSerializer(blog, data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, slug):
-        blog = get_object_or_404(Blog, slug=slug)
-        if blog.user != request.user:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+    # def delete(self, request, slug):
+    #     blog = get_object_or_404(Blog, slug=slug)
+    #     if blog.user != request.user:
+    #         return Response(status=status.HTTP_403_FORBIDDEN)
 
-        blog.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    #     blog.delete()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)

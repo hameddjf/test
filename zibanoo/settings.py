@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-1j7*c*27gn+t$tpohmvdlpje&lgo=^v1&j#b8wd+4t6#)0#9f5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['hameddjf.pythonanywhere.com', 'example.com']
+ALLOWED_HOSTS = ['hameddjf.pythonanywhere.com', 'example.com' , '127.0.0.1']
 
 # Application definition
 
@@ -172,10 +172,10 @@ DEFAULT_FROM_EMAIL = os.environ.get('default_from_email')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('email_host')
 EMAIL_PORT = os.environ.get('email_port')
-EMAIL_USE_TLS = os.environ.get('email_use_tls')
+EMAIL_USE_TLS = 587
 EMAIL_HOST_USER = os.environ.get('email_host_user')
 EMAIL_HOST_PASSWORD = os.environ.get('email_host_password')
-EMAIL_TIMEOUT = os.environ.get('email_timeout')
+EMAIL_TIMEOUT = 300
 
 # تنظیم مدل یوزر سفارشی
 AUTH_USER_MODEL = 'accounts.CustomUser'

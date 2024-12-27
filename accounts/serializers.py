@@ -11,8 +11,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['id', 'email', 'username', 'phone_number',
-                  'address', 'postal_code', 'note', 'password']
+        fields = ['id', 'email', 'username','password']
         extra_kwargs = {
             'password': {'write_only': True},
             'email': {'required': True},
@@ -37,11 +36,11 @@ class CustomUserSerializer(serializers.ModelSerializer):
                 "کاربری با این نام کاربری وجود دارد.")
         return value
 
-    def validate_phone_number(self, value):
-        if CustomUser.objects.filter(phone_number=value).exists():
-            raise serializers.ValidationError(
-                "کاربری با این شماره تلفن وجود دارد.")
-        return value
+    # def validate_phone_number(self, value):
+    #     if CustomUser.objects.filter(phone_number=value).exists():
+    #         raise serializers.ValidationError(
+    #             "کاربری با این شماره تلفن وجود دارد.")
+    #     return value
 
 
 class LoginSerializer(serializers.Serializer):

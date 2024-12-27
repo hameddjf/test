@@ -1,9 +1,8 @@
-from decimal import Decimal
-from typing import List, Dict
+from typing import Dict
 
 from django.core.cache import cache
 
-from .models import CartItem, Promotion
+from .models import Promotion
 
 
 def format_price(value):
@@ -26,41 +25,41 @@ def format_price(value):
     return f"{formatted_value} تومان"
 
 
-def calculate_cart_totals(cart_items: List[CartItem]) -> Dict:
-    """Calculate cart totals including subtotal, discount and final total"""
+# def calculate_cart_totals(cart_items: List[CartItem]) -> Dict:
+#     """Calculate cart totals including subtotal, discount and final total"""
 
-    # if cart is empty
-    if not cart_items:
-        return {
-            'subtotal': 0,
-            'total_discount': 0,
-            'final_total': 0,
-            'items_count': 0,
-            'total_quantity': 0
-        }
+#     # if cart is empty
+#     if not cart_items:
+#         return {
+#             'subtotal': 0,
+#             'total_discount': 0,
+#             'final_total': 0,
+#             'items_count': 0,
+#             'total_quantity': 0
+#         }
 
-    # if cart is not empty
-    user_id = cart_items[0].user.id
-    cache_key = f'cart_totals_{user_id}'
-    cached_result = cache.get(cache_key)
+#     # if cart is not empty
+#     user_id = cart_items[0].user.id
+#     cache_key = f'cart_totals_{user_id}'
+#     cached_result = cache.get(cache_key)
 
-    if cached_result:
-        return cached_result
+#     if cached_result:
+#         return cached_result
 
-    subtotal = sum(item.get_subtotal() for item in cart_items)
-    final_total = sum(item.calculate_final_price() for item in cart_items)
-    total_discount = subtotal - final_total
+#     subtotal = sum(item.get_subtotal() for item in cart_items)
+#     final_total = sum(item.calculate_final_price() for item in cart_items)
+#     total_discount = subtotal - final_total
 
-    result = {
-        'subtotal': subtotal,
-        'total_discount': total_discount,
-        'final_total': final_total,
-        'items_count': len(cart_items),
-        'total_quantity': sum(item.quantity for item in cart_items)
-    }
-    # Save in cache for 5 minutes
-    cache.set(cache_key, result, 300)
-    return result
+#     result = {
+#         'subtotal': subtotal,
+#         'total_discount': total_discount,
+#         'final_total': final_total,
+#         'items_count': len(cart_items),
+#         'total_quantity': sum(item.quantity for item in cart_items)
+#     }
+#     # Save in cache for 5 minutes
+#     cache.set(cache_key, result, 300)
+#     return result
 
 
 def validate_promotion_code(code: str, user_id: int) -> Dict:

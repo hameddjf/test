@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from .models import Promotion, CartItem
-from .utils import format_price
+from .models import Promotion
 # Register your models here.
 
 
@@ -30,30 +29,30 @@ class PromotionAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(CartItem)
-class CartItemAdmin(admin.ModelAdmin):
-    list_display = ['user', 'product', 'quantity', 'is_active', 'created_at',
-                    'get_final_price']
-    list_filter = ['is_active', 'created_at']
-    search_fields = ['user__username', 'product__title']
-    raw_id_fields = ['user', 'product', 'coupon']
-    readonly_fields = ['created_at', 'updated_at']
+# @admin.register(CartItem)
+# class CartItemAdmin(admin.ModelAdmin):
+#     list_display = ['user', 'product', 'quantity', 'is_active', 'created_at',
+#                     'get_final_price']
+#     list_filter = ['is_active', 'created_at']
+#     search_fields = ['user__username', 'product__title']
+#     raw_id_fields = ['user', 'product', 'coupon']
+#     readonly_fields = ['created_at', 'updated_at']
 
-    fieldsets = (
-        ('اطلاعات کاربر', {
-            'fields': ('user', 'is_active')
-        }),
-        ('اطلاعات محصول', {
-            'fields': ('product', 'quantity')
-        }),
-        ('تخفیف', {
-            'fields': ('coupon',)
-        }),
-        ('زمان', {
-            'fields': ('created_at', 'updated_at')
-        }),
-    )
+#     fieldsets = (
+#         ('اطلاعات کاربر', {
+#             'fields': ('user', 'is_active')
+#         }),
+#         ('اطلاعات محصول', {
+#             'fields': ('product', 'quantity')
+#         }),
+#         ('تخفیف', {
+#             'fields': ('coupon',)
+#         }),
+#         ('زمان', {
+#             'fields': ('created_at', 'updated_at')
+#         }),
+#     )
 
-    @admin.display(description='قیمت نهایی')
-    def get_final_price(self, obj):
-        return format_price(obj.calculate_final_price())
+#     @admin.display(description='قیمت نهایی')
+#     def get_final_price(self, obj):
+#         return format_price(obj.calculate_final_price())

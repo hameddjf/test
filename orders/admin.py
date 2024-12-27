@@ -80,7 +80,7 @@ def process_orders(self, request, queryset):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['order_number', 'user_link', 'status_badge', 'total_items',
+    list_display = ['order_number', 'user_link', 'status_badge', 
                     'bank_type', 'created', 'is_active']
     list_filter = ['status', 'is_active', 'bank_type', 'created']
     search_fields = ['order_number', 'user__username', 'user__email']
@@ -97,7 +97,7 @@ class OrderAdmin(admin.ModelAdmin):
             'fields': ('bank_type', 'bank_record', 'promotion_coupon')
         }),
         (_('Items'), {
-            'fields': ('cart_items', 'addresses')
+            'fields': ('addresses',)
         }),
         (_('Timestamps'), {
             'fields': ('created', 'updated'),
@@ -127,10 +127,6 @@ class OrderAdmin(admin.ModelAdmin):
         )
     status_badge.short_description = _('Status')
 
-    def total_items(self, obj):
-        return obj.cart_items.count()
-    total_items.short_description = _('Total Items')
-
     class Media:
         css = {
             'all': ('admin/css/custom_admin.css',)
@@ -138,8 +134,7 @@ class OrderAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if obj and obj.status in [Status.DELIVERED, Status.CANCELLED]:
-            return self.readonly_fields + ['status', 'cart_items', 'bank_type',
-                                           'bank_record', 'promotion_coupon']
+            return self.readonly_fields + ['status','bank_type','bank_record', 'promotion_coupon']
         return self.readonly_fields
 
     def has_delete_permission(self, request, obj=None):

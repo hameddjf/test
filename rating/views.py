@@ -38,10 +38,10 @@ class RatingDetailAPIView(APIView):
     def get_object(self, pk, user):
         return get_object_or_404(Rating, pk=pk, user=user)
 
-    def get(self, request, pk):
-        rating = self.get_object(pk, request.user)
-        serializer = RatingSerializer(rating, context={'request': request})
-        return Response(serializer.data)
+    # def get(self, request, pk):
+    #     rating = self.get_object(pk, request.user)
+    #     serializer = RatingSerializer(rating, context={'request': request})
+    #     return Response(serializer.data)
 
     def put(self, request, pk):
         rating = self.get_object(pk, request.user)
@@ -52,7 +52,7 @@ class RatingDetailAPIView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk):
-        rating = self.get_object(pk, request.user)
-        rating.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    # def delete(self, request, pk):
+    #     rating = self.get_object(pk, request.user)
+    #     rating.delete()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)

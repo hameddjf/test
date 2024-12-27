@@ -21,8 +21,20 @@ from .models import CustomUser
 
 
 class SignUpView(APIView):
-    def post(self, request, *args, **kwargs):
+    """
+    SignUpView handles user registration and account activation via email.
+    """
 
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests for user registration.
+        Request Body:
+        {
+            "email": "user@example.com",
+            "username": "username",
+            "password": "password"
+        }
+        """
         serializer = CustomUserSerializer(data=request.data)
         if serializer.is_valid():
             email = serializer.validated_data.get('email')
@@ -32,8 +44,8 @@ class SignUpView(APIView):
             if CustomUser.objects.filter(email=email).exists():
                 return Response({'message': 'User with this email already exists.'}, status=status.HTTP_400_BAD_REQUEST)
 
-            if CustomUser.objects.filter(phone_number=phone_number).exists():
-                return Response({'message': 'User with this phone number already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+            # if CustomUser.objects.filter(phone_number=phone_number).exists():
+            #     return Response({'message': 'User with this phone number already exists.'}, status=status.HTTP_400_BAD_REQUEST)
 
             if CustomUser.objects.filter(username=username).exists():
                 return Response({'message': 'User with this username already exists.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -42,17 +54,15 @@ class SignUpView(APIView):
             token = account_activation_token.make_token(user)
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             domain = get_current_site(request).domain
-            activate_url = f"http://{domain}{reverse_lazy(
-                'activate', kwargs={'uidb64': uid, 'token': token})}"
+            activate_url = f"http://{domain}{reverse_lazy('activate', kwargs={'uidb64': uid, 'token': token})}"
             email_subject = 'Activate your account'
-            email_body = f'Please click the link to activate your account: {
-                activate_url}'
+            email_body = f'Please click the link to activate your account: {activate_url}'
 
             try:
                 send_mail(email_subject, email_body,
                           settings.DEFAULT_FROM_EMAIL, [user.email])
             except Exception as e:
-                user.delete()  #
+                user.delete()  # Delete the user if email sending fails
                 return Response({'message': 'Error sending email.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             return Response({'message': 'User registered successfully. Please check your email to activate your account.'}, status=status.HTTP_201_CREATED)

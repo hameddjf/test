@@ -55,10 +55,10 @@ class CommentDetailAPIView(APIView):
     def get_object(self, pk):
         return get_object_or_404(Comment, pk=pk, is_active=True)
 
-    def get(self, request, pk):
-        comment = self.get_object(pk)
-        serializer = CommentSerializer(comment, context={'request': request})
-        return Response(serializer.data)
+    # def get(self, request, pk):
+    #     comment = self.get_object(pk)
+    #     serializer = CommentSerializer(comment, context={'request': request})
+    #     return Response(serializer.data)
 
     @transaction.atomic
     def put(self, request, pk):
@@ -76,12 +76,12 @@ class CommentDetailAPIView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk):
-        comment = self.get_object(pk)
-        self.check_object_permissions(request, comment)
-        comment.is_active = False
-        comment.save()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    # def delete(self, request, pk):
+    #     comment = self.get_object(pk)
+    #     self.check_object_permissions(request, comment)
+    #     comment.is_active = False
+    #     comment.save()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class LikeCreateDestroyAPIView(APIView):
@@ -101,13 +101,13 @@ class LikeCreateDestroyAPIView(APIView):
                 return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, comment_id):
-        like = get_object_or_404(
-            Like,
-            user=request.user,
-            comment_id=comment_id,
-            is_active=True
-        )
-        like.is_active = False
-        like.save()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    # def delete(self, request, comment_id):
+    #     like = get_object_or_404(
+    #         Like,
+    #         user=request.user,
+    #         comment_id=comment_id,
+    #         is_active=True
+    #     )
+    #     like.is_active = False
+    #     like.save()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)

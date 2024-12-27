@@ -1,6 +1,5 @@
 from rest_framework import serializers
 
-from carts.serializers import CartItemSerializer
 from accounts.models import CustomUser
 from orders.models import Order
 
@@ -65,20 +64,25 @@ class OrderStatusLogSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    cart_items = CartItemSerializer(many=True, read_only=True)
     status_logs = OrderStatusLogSerializer(many=True, read_only=True)
-    total_amount = serializers.SerializerMethodField()
+    total_amount = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
 
     class Meta:
         model = Order
-        fields = ['id', 'user', 'cart_items', 'promotion_coupon',
-                  'bank_type', 'order_number', 'status', 'is_active',
-                  'created', 'updated', 'status_logs', 'total_amount']
+        fields = [
+            'id', 'user', 'promotion_coupon',
+            'bank_type', 'order_number', 'status', 'is_active',
+            'created', 'updated', 'status_logs', 'total_amount'
+        ]
         read_only_fields = ['order_number', 'status', 'bank_type']
 
-    def get_total_amount(self, obj):
-        return sum(item.calculate_final_price() for item in obj.cart_items.all())
-
+    def validate(self, data):
+        """
+        Custom validation to ensure that total_amount is provided.
+        """
+        if 'total_amount' not in data:
+            raise serializers.ValidationError("Total amount is required.")
+        return data
 
 class OrderCreateSerializer(serializers.ModelSerializer):
     class Meta:

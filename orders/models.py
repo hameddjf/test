@@ -90,9 +90,6 @@ class Order(models.Model):
         'accounts.CustomUser', on_delete=models.CASCADE, related_name='orders')
     addresses = models.ManyToManyField(Address, related_name='orders', blank=True)
 
-    cart_items = models.ManyToManyField(
-        'carts.CartItem', related_name='orders')
-
     promotion_coupon = models.ForeignKey(
         'carts.Promotion', on_delete=models.SET_NULL, null=True, blank=True, related_name='orders',)
 
