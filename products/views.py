@@ -66,7 +66,7 @@ class CategoryListAPIView(APIView):
             
 #             products = Product.objects.filter(category=category)
             
-#             paginator = CustomPageNumberPagination()
+#             paginator = ProductPagination()
 #             page = paginator.paginate_queryset(products, request)
 #             products_serializer = ProductSerializer(page, many=True)
 
@@ -114,9 +114,8 @@ class ProductGalleryListAPIView(APIView):
             return Response({'error': 'An unexpected error occurred: ' + str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # Pagination products
-class CustomPageNumberPagination(PageNumberPagination):
-    page_size_query_param = 'page_size'
-    page_size = 12
+class ProductPagination(PageNumberPagination):
+    page_size_query_param = 'per_page'
 
     def get_paginated_response(self, data):
         return Response({
@@ -124,6 +123,8 @@ class CustomPageNumberPagination(PageNumberPagination):
             'per_page': self.page.paginator.per_page,
             'total_pages': self.page.paginator.num_pages,
             'total_products': self.page.paginator.count,
+            'next': self.get_next_link(),
+            'previous': self.get_previous_link(),
             'products': data
         })
         
@@ -239,7 +240,7 @@ class ProductSearch:
         return {'lk': []}
     
 class ProductListAPIView(APIView):
-    pagination_class = CustomPageNumberPagination
+    pagination_class = ProductPagination
 
     def get_view_count_queryset(self):
         queryset = Product.objects.all()

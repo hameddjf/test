@@ -8,6 +8,31 @@ from azbankgateways.models.banks import Bank
 
 # Create your models here.
 
+class Payment(models.Model):
+    PAYMENT_STATUS_CHOICES = [
+        ('pending', 'در انتظار پرداخت'),
+        ('successful', 'پرداخت موفق'),
+        ('failed', 'پرداخت ناموفق'),
+    ]
+    bank_record = models.OneToOneField(Bank, on_delete=models.CASCADE, verbose_name=_("رکورد بانکی"), default=None)
+    order = models.OneToOneField('Order', on_delete=models.CASCADE, related_name='payment', verbose_name='سفارش')
+    
+    tracking_code = models.CharField(max_length=100, unique=True, verbose_name='کد پیگیری')
+    
+    amount = models.PositiveIntegerField(verbose_name='مبلغ پرداختی')
+    
+    status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='pending', verbose_name='وضعیت پرداخت')
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = 'پرداخت'
+        verbose_name_plural = 'پرداخت‌ها'
+    
+    def __str__(self):
+        return f"Payment for Order {self.order.order_number}"
+
 
 class OrderStatusManager:
     def __init__(self, order):

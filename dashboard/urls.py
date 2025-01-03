@@ -9,9 +9,9 @@ urlpatterns = [
     path('profile/update/', views.ProfileUpdateView.as_view(), name='profile-update'),
     
     # سفارشات
-    path('orders/history/', views.OrderHistoryView.as_view(), name='order-history'),
+    path('orders/', views.OrderHistoryView.as_view(), name='order-history'),
     
     # آدرس‌ها
-    path('addresses/', views.AddressListView.as_view(), name='address-list'),
+    path('addresses/', views.AddressCreateView.as_view(), name='address-list'),
     path('addresses/<int:pk>/', views.AddressDetailView.as_view(), name='address-detail'),
 ]

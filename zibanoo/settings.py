@@ -153,9 +153,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -168,13 +166,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # تنظیمات ایمیل (برای ارسال لینک فعال‌سازی)
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = os.environ.get('default_from_email')
+# DEFAULT_FROM_EMAIL = os.environ.get('default_from_email')
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = os.environ.get('email_host')
+# # EMAIL_PORT = 587
+# EMAIL_PORT = int(os.environ.get('email_port', 587))  
+# EMAIL_USE_TLS = os.environ.get('email_use_tls')
+# EMAIL_HOST_USER = os.environ.get('email_host_user')
+# EMAIL_HOST_PASSWORD = os.environ.get('email_host_password')
+# EMAIL_TIMEOUT = 300
+DEFAULT_FROM_EMAIL = 'hameddjf106@gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get('email_host')
-EMAIL_PORT = os.environ.get('email_port')
-EMAIL_USE_TLS = 587
-EMAIL_HOST_USER = os.environ.get('email_host_user')
-EMAIL_HOST_PASSWORD = os.environ.get('email_host_password')
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'hameddjf106@gmail.com'
+EMAIL_HOST_PASSWORD = 'aaas ypux cauw lbho'
 EMAIL_TIMEOUT = 300
 
 # تنظیم مدل یوزر سفارشی

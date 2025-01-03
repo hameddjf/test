@@ -29,8 +29,7 @@ class OrderStatusLogAdmin(admin.ModelAdmin):
                     'status_change', 'created_by', 'created_at']
     list_filter = ['old_status', 'new_status', 'created_at']
     search_fields = ['order__order_number', 'created_by__username']
-    readonly_fields = ['old_status',
-                       'new_status', 'created_by', 'created_at']
+    readonly_fields = ['old_status','new_status', 'created_by', 'created_at']
     save_on_top = True
 
     def order_number(self, obj):
@@ -62,8 +61,7 @@ def cancel_orders(self, request, queryset):
         try:
             OrderStatusManager(order).cancel()
         except ValidationError:
-            self.message_user(request,
-                              f'Could not cancel order {order.order_number}', level='ERROR')
+            self.message_user(request,f'Could not cancel order {order.order_number}', level='ERROR')
 
 
 @admin.action(description=_('Process selected orders'))
@@ -72,10 +70,7 @@ def process_orders(self, request, queryset):
         try:
             OrderStatusManager(order).process()
         except ValidationError:
-            self.message_user(request,
-                              f'Could not process order {
-                                  order.order_number}',
-                              level='ERROR')
+            self.message_user(request,f'Could not process order {order.order_number}',level='ERROR')
 
 
 @admin.register(Order)
